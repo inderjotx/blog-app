@@ -40,6 +40,9 @@ jobs:
           NEXT_AUTH_SECRET: ${{ secrets.NEXT_AUTH_SECRET }}
           TINYMCE_KEY: ${{ secrets.TINYMCE_KEY }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+        run: |
+          echo "random string "
       - name: Detect package manager
         id: detect-package-manager
         run: |
