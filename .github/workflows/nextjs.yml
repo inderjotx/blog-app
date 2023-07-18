@@ -42,7 +42,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
         run: |
-          echo "random string "
+          echo "random string"
       - name: Detect package manager
         id: detect-package-manager
         run: |
