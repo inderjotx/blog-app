@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id       Int       @default(autoincrement())
+  isAdmin  Boolean   @default(false)
+  username String
+  email    String    @unique
+  password String
+  posts    Post[]
+  comments Comment[]
+  likes    Like[]
+  Dislike  Dislike[]
+
+  @@id([id])
+}
+
+model Comment {
+  id       Int       @default(autoincrement())
+  blog_id  Int
+  user_id  Int
+  content  String
+  likes    Int       @default(0)
+  dislikes Int       @default(0)
+  datetime DateTime  @default(now())
+  post     Post      @relation(fields: [blog_id], references: [id])
+  user     User      @relation(fields: [user_id], references: [id])
+  Like     Like[]
+  Dislike  Dislike[]
+
+  @@id([id])
+  @@index([blog_id])
+  @@index([user_id])
+}
+
+model Like {
+  id         Int     @default(autoincrement())
+  user_id    Int
+  post_id    Int
+  comment_id Int
+  user       User    @relation(fields: [user_id], references: [id])
+  post       Post    @relation(fields: [post_id], references: [id])
+  comment    Comment @relation(fields: [comment_id], references: [id])
+
+  @@id([id])
+  @@index([user_id])
+  @@index([post_id])
+  @@index([comment_id])
+}
+
+model Dislike {
+  id         Int     @default(autoincrement())
+  user_id    Int
+  post_id    Int
+  comment_id Int
+  user       User    @relation(fields: [user_id], references: [id])
+  post       Post    @relation(fields: [post_id], references: [id])
+  comment    Comment @relation(fields: [comment_id], references: [id])
+
+  @@id([id])
+  @@index([user_id])
+  @@index([post_id])
+  @@index([comment_id])
+}
+
+model Post {
+  id       Int       @default(autoincrement())
+  user_id  Int
+  content  String
+  heading  String
+  datetime DateTime  @default(now())
+  comments Comment[]
+  user     User      @relation(fields: [user_id], references: [id])
+  Like     Like[]
+  Dislike  Dislike[]
+
+  @@id([id])
+  @@index([id])
+  @@index([user_id])
+}
