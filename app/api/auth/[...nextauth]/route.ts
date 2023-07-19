@@ -14,6 +14,8 @@ interface SessionCallback {
 }
 
 
+
+
 export const authOptions : any  = {
   secret : process.env.NEXT_AUTH_SECRET ,
   providers : [
@@ -64,81 +66,21 @@ export const authOptions : any  = {
       async session( { session , user , token } : SessionCallback ){
         prisma.$connect
 
-        console.log(session)
 
-        try {
+          const new_user = session.user;
 
-          const user = await prisma.user.findFirst( { where : { email : String(session.user?.email) }})
-          if ( user?.password === undefined ){
-              return session;
-          }
-
-          else{
-            // user with the same email exist, and has logged in using the simple way 
-            return null;
-          }
+          const data_back = await prisma.user.create({
+            data : new_user
+          })
 
 
-        }
-
-        catch (error ){
-
-          console.log(error)
-          return null;
-        }
-        
+          return data_back;
       }
   }
   
 
 
 }
-
-
-
-// async function OuthUser( session : Session)  : User | null {
-    
-//   const user = await getUser( session.user?.name );
-
-//   // new user 
-//   if ( !user ) {
-//       const newUser: User =   await createUser(session)
-//       return newUser;
-//   }
-
-//   // alread exist 
-//   else{
-    
-//     // logged in before using outh 
-//     if ( !user.password ) return user;
-
-
-//     // without using oauth 
-//     else ( )
-
-//   }
-  
-
-// }
-
-
-// async function simpleLogin(){
-
-// }
-
-
-// async function getUser(email : string | null | undefined){
-
-//   if ( typeof (email) === null || typeof (email) === undefined) return null;
-
-//   else  return prisma.user.findFirst( { where : { email : email}})
-// }
-
-
-// async function createUser( session : Session){
-//    const user =  await prisma.user.create({ data : { username : session.user?.name || "" , email : session.user?.email || "" , isAdmin : false}})
-//    return user;
-// }
 
 
 const handler = NextAuth( authOptions  )

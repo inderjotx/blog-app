@@ -11,9 +11,10 @@ datasource db {
 model User {
   id       Int       @default(autoincrement())
   isAdmin  Boolean   @default(false)
-  username String
-  email    String    @unique
+  name     String
+  email    String
   password String?
+  image    String?
   posts    Post[]
   comments Comment[]
   likes    Like[]

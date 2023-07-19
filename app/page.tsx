@@ -23,7 +23,7 @@ export default async function Home() {
   return (
         <div>
               <div>
-                <div>Hi { profile.data?.user?.name}</div>
+                <div>Hi { JSON.stringify(profile.data) }</div>
                       <div>
                       <Link href={'/admin/create_new'}>Create Post</Link>
                       </div>

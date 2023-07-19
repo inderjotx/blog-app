@@ -1,9 +1,13 @@
 'use client'
 import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import { useSession } from 'next-auth/react';
 
 export default function App() {
+
+
     const editorRef : React.MutableRefObject<any>  =  useRef(null);
+    const { data  } = useSession({ required : true})
 
     async function  sendToBackend(){
       const content = String(editorRef.current?.getContent())
@@ -15,7 +19,7 @@ export default function App() {
           "Content-Type": "application/json"
         },
 
-        body : JSON.stringify({content : content})
+        body : JSON.stringify({content : content , id : data?.user?.id })
       })
     }
 

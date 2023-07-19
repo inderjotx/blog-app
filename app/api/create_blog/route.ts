@@ -1,27 +1,36 @@
 import { NextResponse } from 'next/server'
-import  { PrismaClient } from '@prisma/client'
+import  { PrismaClient, Post } from '@prisma/client'
+import { useSession } from 'next-auth/react'
+
 const prisma = new PrismaClient();
-const USER_ID = 'random_id'
 
 
 export async function  POST(request : Request ){
-    const { content  } = await request.json();
-    await Post(content);
+    const { content , id  } = await request.json();
+    await Post(content, parseInt(id));
     return NextResponse.json("created a object prehaps ")
 }
 
 
 
-async function Post( content : string   ){
-    await prisma.$connect;
+async function Post( content : string  , id : number  ){
+     prisma.$connect;
+    
+     const user = await prisma.user.findFirst( { where : { id : id }}) 
+
+  
     try {
         const newUser = await prisma.post.create( {
           data : {
             content : content,
+            user_id : id
+            user : user
+            heading : "panda"
           }
         })
-  
-        console.log( "user created ");
+
+
+        console.log(newUser);
     }
   
     catch(error){
