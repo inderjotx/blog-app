@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 export async function GET() {
   prisma.$connect
 
-  const articles = await prisma.blog.findMany();
+  const articles = await prisma.post.findMany();
 
   prisma.$disconnect
   return NextResponse.json(articles )

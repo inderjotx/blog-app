@@ -15,10 +15,9 @@ export async function  POST(request : Request ){
 async function Post( content : string   ){
     await prisma.$connect;
     try {
-        const newUser = await prisma.blog.create( {
+        const newUser = await prisma.post.create( {
           data : {
             content : content,
-            user_id : '5'
           }
         })
   

@@ -13,7 +13,7 @@ model User {
   isAdmin  Boolean   @default(false)
   username String
   email    String    @unique
-  password String
+  password String?
   posts    Post[]
   comments Comment[]
   likes    Like[]
