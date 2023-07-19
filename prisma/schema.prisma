@@ -3,30 +3,26 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id       Int       @default(autoincrement())
+  id       String    @id @default(uuid()) @map("_id")
   isAdmin  Boolean   @default(false)
-  name     String
-  email    String
-  password String?
-  image    String?
+  username String
+  email    String    @unique
+  password String
   posts    Post[]
   comments Comment[]
   likes    Like[]
   Dislike  Dislike[]
-
-  @@id([id])
 }
 
 model Comment {
-  id       Int       @default(autoincrement())
-  blog_id  Int
-  user_id  Int
+  id       String    @id @default(uuid()) @map("_id")
+  blog_id  String
+  user_id  String
   content  String
   likes    Int       @default(0)
   dislikes Int       @default(0)
@@ -35,45 +31,31 @@ model Comment {
   user     User      @relation(fields: [user_id], references: [id])
   Like     Like[]
   Dislike  Dislike[]
-
-  @@id([id])
-  @@index([blog_id])
-  @@index([user_id])
 }
 
 model Like {
-  id         Int     @default(autoincrement())
-  user_id    Int
-  post_id    Int
-  comment_id Int
+  id         String  @id @default(uuid()) @map("_id")
+  user_id    String
+  post_id    String
+  comment_id String
   user       User    @relation(fields: [user_id], references: [id])
   post       Post    @relation(fields: [post_id], references: [id])
   comment    Comment @relation(fields: [comment_id], references: [id])
-
-  @@id([id])
-  @@index([user_id])
-  @@index([post_id])
-  @@index([comment_id])
 }
 
 model Dislike {
-  id         Int     @default(autoincrement())
-  user_id    Int
-  post_id    Int
-  comment_id Int
+  id         String  @id @default(uuid()) @map("_id")
+  user_id    String
+  post_id    String
+  comment_id String
   user       User    @relation(fields: [user_id], references: [id])
   post       Post    @relation(fields: [post_id], references: [id])
   comment    Comment @relation(fields: [comment_id], references: [id])
-
-  @@id([id])
-  @@index([user_id])
-  @@index([post_id])
-  @@index([comment_id])
 }
 
 model Post {
-  id       Int       @default(autoincrement())
-  user_id  Int
+  id       String    @id @default(uuid()) @map("_id")
+  user_id  String
   content  String
   heading  String
   datetime DateTime  @default(now())
@@ -81,8 +63,4 @@ model Post {
   user     User      @relation(fields: [user_id], references: [id])
   Like     Like[]
   Dislike  Dislike[]
-
-  @@id([id])
-  @@index([id])
-  @@index([user_id])
 }
