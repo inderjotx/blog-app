@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef } from 'react';
+import React, { useRef, useState  } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { useSession } from 'next-auth/react';
 
@@ -7,6 +7,7 @@ export default function App() {
 
 
     const editorRef : React.MutableRefObject<any>  =  useRef(null);
+    const [ heading , setHeading ] = useState<string>("");
     const { data  } = useSession({ required : true})
 
     async function  sendToBackend(){
@@ -19,7 +20,7 @@ export default function App() {
           "Content-Type": "application/json"
         },
 
-        body : JSON.stringify({content : content , id : data?.user?.id })
+        body : JSON.stringify({content : content, heading : heading  })
       })
     }
 
@@ -27,6 +28,7 @@ export default function App() {
     
   return (
     <>
+      <div><input type="text" title='heading' placeholder='heading ...' onChange={(e) => setHeading(e.target.value) } value={heading} /></div>
       <Editor
       apiKey={process.env.TINYMCE_KEY || ''}
       // selector="textarea#open-source-plugins"

@@ -6,14 +6,15 @@ const prisma = new PrismaClient();
 
 
 export async function  POST(request : Request ){
-    const { content , id  } = await request.json();
-    await Post(content, parseInt(id));
+    const { data  } = useSession();
+    const { content , heading  } = await request.json();
+    await Post( data?.user?. , content, heading);
     return NextResponse.json("created a object prehaps ")
 }
 
 
 
-async function Post( content : string  , id : number  ){
+async function Post( user_id : string , content : string  , heading  : number  ){
      prisma.$connect;
     
      const user = await prisma.user.findFirst( { where : { id : id }}) 

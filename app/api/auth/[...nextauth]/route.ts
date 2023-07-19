@@ -65,16 +65,7 @@ export const authOptions : any  = {
   callbacks : {
       async session( { session , user , token } : SessionCallback ){
         prisma.$connect
-
-
-          const new_user = session.user;
-
-          const data_back = await prisma.user.create({
-            data : new_user
-          })
-
-
-          return data_back;
+          return session ;
       }
   }
   
