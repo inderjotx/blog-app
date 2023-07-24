@@ -13,7 +13,6 @@ export async function GET() {
   const articles = await prisma.post.findMany()
 
   prisma.$disconnect
-  console.log(articles)
   return NextResponse.json(articles )
 
 }

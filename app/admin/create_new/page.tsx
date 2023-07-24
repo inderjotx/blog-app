@@ -5,10 +5,11 @@ import { useSession } from 'next-auth/react';
 
 export default function App() {
 
+    const { data } = useSession()
 
     const editorRef : React.MutableRefObject<any>  =  useRef(null);
     const [ heading , setHeading ] = useState<string>("");
-    const { data  } = useSession({ required : true})
+    
 
     async function  sendToBackend(){
       const content = String(editorRef.current?.getContent())
@@ -20,7 +21,7 @@ export default function App() {
           "Content-Type": "application/json"
         },
 
-        body : JSON.stringify({content : content, heading : heading  })
+        body : JSON.stringify({id : data?.user?.id ,content : content, heading : heading  })
       })
     }
 

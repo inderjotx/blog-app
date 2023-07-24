@@ -4,6 +4,7 @@ import DiscordProvider from "next-auth/providers/discord"
 import CredentialsProvider from "next-auth/providers/credentials";
 import  { PrismaClient, User } from '@prisma/client'
 import { Session } from "next-auth";
+import { signIn } from 'next-auth/react';
 const prisma = new PrismaClient();
 
 
@@ -63,10 +64,51 @@ export const authOptions : any  = {
   ]
 ,
   callbacks : {
+      async signIn({ user, account, profile, credentials } : { user : any , account : any , profile : any, credentials : any}){
+
+          prisma.$connect
+          console.log(user)
+          const email = user.email;
+          const is_user = await prisma.user.findFirst(  {where : { email : email }});
+
+          if ( !is_user ){
+             // add to the database
+             const new_user = await prisma.user.create({ data : { username : user?.name , image : user?.image , email : email }})
+             return true;
+
+          }
+
+          if ( (is_user?.password && !user.password )){
+            
+              return false;
+          }
+
+          if (!is_user?.password && user.password ){
+            // no passwords
+            return false;
+          }
+
+
+          if ( is_user.password != user.password ) return false;
+          
+          
+          return true;
+        
+      }
+      ,
+
+
       async session( { session , user , token } : SessionCallback ){
         prisma.$connect
+        const user_profile  = await prisma.user.findFirst({ where : { email : session.user?.email || ""}})
+        if ( session.user ) {
+          session.user.id  = user_profile?.id || ""
+        } 
+        
+        
           return session ;
       }
+
   }
   
 
