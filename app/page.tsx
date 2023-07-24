@@ -1,45 +1,19 @@
-'use client'
-import { useSession } from 'next-auth/react';
 import { Post } from '@prisma/client';
 import Link from 'next/link'
 const URL = 'http://localhost:3000/api'
-import { useEffect, useState } from 'react'
 
+async function getPosts(){
+  const data  = await fetch(URL, {next : {revalidate : 1000 }})
+  const posts = await data.json()  
+  return posts;
+}
 
-export default  function Home() {
-  const  profile = useSession()
-  const [ posts , setPosts ] = useState<any[]>([]);
-
-  
-  useEffect(  () => {
-      async function fetcher(url  : string ){
-        const data = await fetch(url);
-        const posts : Post[] | null  = await data.json();
-        return posts ;
-      }
-
-      fetcher(URL)
-      .then( (postsData) => {
-
-      
-          if ( postsData){
-            setPosts(postsData) 
-          }
-          else{
-            console.log("No Posts yet")
-          }
-
-        }
-           
-      )
-      .catch( (err) => console.log(err) )
-
-    }, [])
-
-  return (
+export default async   function Home() {
+    const posts : any[] = await getPosts(); 
+    return (
         <div>
               <div>
-                <div>{ profile.data?.user?.name}</div>
+                <div>{}</div>
                       <div>
                       <Link href={'/admin/create_new'}>Create Post</Link>
                       </div>
