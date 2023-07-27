@@ -10,7 +10,7 @@ export default function Navbar() {
   return (
     <>
     {/* {for large and medium devices } */}
-    <div className='fixed top-0  z-10 flex w-full  lg:px-28 md:px-20 justify-between py-5 bg-purple-400'>
+    <div className='fixed top-0  z-10 flex w-full  lg:px-28 md:px-20 justify-between py-5'>
       <div>Logo</div>
       <div className='flex justify-between gap-10 '>
         <div><Link href={'/'}>Home</Link></div>
