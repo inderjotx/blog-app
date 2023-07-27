@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  webpack: (config) => {
-    config.externals = [...config.externals, "bcryptjs"];
-    return config;
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "**/*",
+      },
+    ],
   },
 };
-
-module.exports = nextConfig;

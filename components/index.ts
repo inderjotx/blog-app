@@ -1,3 +1,4 @@
 import Navbar from './navbar/navbar';
 import Footer from './footer/footer';
-export { Navbar, Footer };
+import Card from './Card/Card';
+export { Navbar, Footer , Card};
