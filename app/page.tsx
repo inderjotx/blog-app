@@ -14,20 +14,20 @@ async function getPosts(){
 export default async   function Home() {
     const posts  = await getPosts(); 
     return (
-            <div className='mx-40' >
-            <div>
-                <div>{}</div>
-                      <div>
-                      <Link href={'/admin/create_new'}>create post</Link>
-                      </div>
-              </div>
-              <div>
-              {/* <div>{ posts.map( ( object : post, index  ) => ( <link href={`/article/${index}`}><div>{ object.id }</div></link> ))}</div> */}
-              {/* { posts.map((element, index)  => <div key={index} ><Link href={`/posts/${index}`}> {element.heading}</Link></div>)} */}
-              </div>
-              <div>
-                <Card post={posts[0]} height={'400px'} width={'300px'} />
-              </div>
+      <div className='h-full hero_margin'>
+       <div className='my_grid'>
+        { posts.map( (post, index) => {
+          if ( index == 0){
+                return <div className='hero_content grid_children'>Special Content </div>
+          } 
+          else if ( index == 10){
+                return <div className='base_content grid_children'>Special Content </div>
+          }
+          else{
+                  return <div key={index} className='grid_children'><Card  post={post} height='250px' width='250px'  /></div>
+          }
+        })}
+        </div> 
         </div>
 
       )
