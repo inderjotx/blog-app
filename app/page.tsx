@@ -3,16 +3,29 @@ import Link from 'next/link'
 const URL = 'http://localhost:3000/api'
 import posts from './../testing_data/posts.json'
 import { Card } from './../components/index'
+import ReactMarkdown from 'react-markdown';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism'
+
+// const CodeBlock= ({ language , codestring }: { language  :any , codestring : any }) => {
+//   return (
+//     <SyntaxHighlighter language={language} style={vscDarkPlus} PreTag="div">
+//       {codestring}
+//     </SyntaxHighlighter>
+//   )
+// }
+
 
 async function getPosts(){
   // const data  = await fetch(URL, {next : {revalidate : 1000 }})
   // const posts = await data.json()  
   // console.log("rendering ...")
-  return posts;
+    return {posts : posts , mdBlocks : "", mdString  : "" };
+  
 }
 
 export default async   function Home() {
-    const posts  = await getPosts(); 
+    const {posts, mdBlocks , mdString }  = await getPosts(); 
+    
     return (
       <div className='h-full hero_margin'>
        <div className='my_grid'>
@@ -28,6 +41,26 @@ export default async   function Home() {
           }
         })}
         </div> 
+       
+        {/* <ReactMarkdown
+        components={{
+          code({node, inline, className, children, ...props}) {
+            const match = /language-(\w+)/.exec(className || '')
+            return !inline && match ? (
+              <CodeBlock
+                codestring={String(children).replace(/\n$/, '')}
+                language={match[1]}
+              />
+            ) : (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            )
+          }
+      }}>
+        {mdString}
+     
+      </ReactMarkdown> */}
         </div>
 
       )
